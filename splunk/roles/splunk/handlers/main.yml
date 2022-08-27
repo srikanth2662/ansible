@@ -1,0 +1,6 @@
+##Handlers file for Splunk Forwarder Role
+- name: Start Splunk forwarder service.
+  service:
+    name: {{ system_service }} 
+    state: restarted
+    enabled: yes 

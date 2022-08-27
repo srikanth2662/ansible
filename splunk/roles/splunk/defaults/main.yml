@@ -1,0 +1,6 @@
+##Default file for SplunkForwarder 
+software_location: 0.0.0.1
+version: "8.1.0-f57c09e87251"
+package_rpm: "splunkforwarder-{{ version }}-linux-2.6-x86_64.rpm"
+installation_dir: "/opt/splunkforwarder"
+system_service: "SplunkForwarder"

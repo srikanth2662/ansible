@@ -1,0 +1,34 @@
+- name: "Run Package facts"
+  package_facts:
+    manager: "auto"
+
+- name: "Apache result"
+  debug:
+    msg: "Splunk Forwarder Already installed"
+  when: "'{{ system_service  }}' in ansible_facts.packager"    
+
+- name: Copy the {{ system_service }} RPM to remote Servers.
+  copy:
+    src: "{{ software_location }}/{{ package_rpm }}" 
+    dest: "{{ installation_dir }}"
+    owner: root
+    group: root
+    mode: 0644
+
+- name: Install {{ system_service }}
+  yum: 
+    name: "{{ installation_dir }}/{{ package_rpm }}"
+    disable_gpg_check: yes
+    state: present 
+  notify:
+    - Start Splunk forwarder service
+  when: ansible_os_family == 'RedHat'
+  
+- name: Copy the Splunk Forwarder config from your centralized server to remote servers.
+  copy:
+    src: "{{ software_location}}/splunk_forwarder_output/"
+    dest: "{{ installation_dir }}/etc/system"
+    directory_mode: yes
+    owner: splunk
+    group: splunk
+    mode: 0600
